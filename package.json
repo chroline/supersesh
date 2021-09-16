@@ -5,7 +5,7 @@
     "build:client": "next build",
     "build:server": "tsc --project tsconfig.server.json",
     "build": "yarn build:client && yarn build:server",
-    "start": "cross-env NODE_ENV=production node dist/server/index.js"
+    "start": "cross-env NODE_ENV=production node dist/server.js"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.6.7",
