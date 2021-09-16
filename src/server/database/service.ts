@@ -1,4 +1,4 @@
-import { nanoid } from "nanoid";
+import got from "got";
 
 import { DatabaseStore } from "~/server/database/store";
 import APIErrors from "~/shared/types/APIErrors";
@@ -13,7 +13,13 @@ namespace DatabaseService {
   }
 
   export async function createNewSession(session: Session): Promise<string> {
-    const sessionID = nanoid(8);
+    const sessionID = await got("https://words-aas.vercel.app/api/$adjective $gerund $noun")
+      .json()
+      .then(res => (res as any).phrase);
+
+    // if this sessionID already exists, generate a new one with the same session data.
+    if (await getSession(sessionID)) return createNewSession(session);
+
     await _databaseStore.updateSession(sessionID, session);
     return sessionID;
   }
