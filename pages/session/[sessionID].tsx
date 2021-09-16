@@ -29,7 +29,7 @@ import { SessionDataService } from "~/client/ctrl/session-data";
 import { ChatDisplay } from "~/client/session-page/components/ChatDisplay";
 import { ChatForm } from "~/client/session-page/components/ChatForm";
 import { Sidebar } from "~/client/session-page/components/Sidebar";
-import useHandleSessionPageError from "~/client/session-page/hooks/useHandleSessionPageError";
+import { useHandleSessionPageRedirects } from "~/client/session-page/hooks/useHandleSessionPageRedirects";
 import SessionPageProps from "~/client/session-page/util/SessionPageProps";
 import Session from "~/shared/types/Session";
 
@@ -67,7 +67,7 @@ export default function SessionPage(props: SessionPageProps) {
     isJoined = props.value?.session.userIDs.includes(userID) || props.value?.session.adminID === userID;
 
   // handle potential errors that result in redirects
-  useHandleSessionPageError(props, isJoined, sessionID);
+  useHandleSessionPageRedirects(props, isJoined, sessionID);
 
   const toast = useToast({ position: "bottom-right" });
   APIService.setServerEventListener(SessionDataService.serverEventListener(toast, router));
@@ -101,6 +101,7 @@ export default function SessionPage(props: SessionPageProps) {
           )}
           <VStack
             flex={1}
+            overflow={"hidden"}
             spacing={0}
             divider={<Divider borderColor={{ dark: "warmGray.700", light: "warmGray.200" }[colorMode]} />}
           >

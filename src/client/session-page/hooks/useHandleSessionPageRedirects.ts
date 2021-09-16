@@ -8,7 +8,7 @@ import { SessionDataService } from "~/client/ctrl/session-data";
 import SessionPageProps from "~/client/session-page/util/SessionPageProps";
 import APIErrors from "~/shared/types/APIErrors";
 
-export default function useHandleSessionPageError(props: SessionPageProps, isJoined: boolean, sessionID: string) {
+export const useHandleSessionPageRedirects = (props: SessionPageProps, isJoined: boolean, sessionID: string) => {
   const router = useRouter(),
     toast = useToast({ position: "bottom-right" });
 
@@ -66,4 +66,4 @@ export default function useHandleSessionPageError(props: SessionPageProps, isJoi
           router.push("/");
         });
   }, [sessionID]);
-}
+};

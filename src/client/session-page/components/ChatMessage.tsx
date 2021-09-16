@@ -5,7 +5,7 @@ import { PersonRounded, VerifiedUserRounded } from "@material-ui/icons";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import theme from "~/client/core/util/theme";
+import theme from "~/client/core/styles/theme";
 import { SessionDataService } from "~/client/ctrl/session-data";
 import Chat from "~/shared/types/Chat";
 
@@ -29,13 +29,10 @@ export const ChatMessage: React.FC<{ chat: Chat }> = ({ chat }) => {
     <VStack w={"full"} textAlign={"left"} spacing={1}>
       <HStack w={"full"} spacing={3}>
         <Icon as={icon} style={{ fontSize: theme.sizes[5] }} color={textColor} />
-        <Text fontSize={"md"} fontWeight={"medium"} color={textColor}>
+        <Text fontSize={"md"} fontWeight={"medium"} color={textColor} w={"full"} isTruncated>
           {chat.userID}
         </Text>
-        <Text fontSize={"md"} opacity={0.8}>
-          —
-        </Text>
-        <Text fontSize={"md"} opacity={0.8}>
+        <Text fontSize={"md"} opacity={0.8} flexShrink={0}>
           {dayjs(chat.date).fromNow()}
         </Text>
       </HStack>
