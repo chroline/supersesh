@@ -7,7 +7,6 @@ import Router from "next/router";
 import NProgress from "nprogress";
 
 import "~/client/core/assets/fonts/Calibre/stylesheet.scss";
-import "~/client/core/styles/main.scss";
 import "~/client/core/styles/nprogress.scss";
 import theme from "~/client/core/util/theme";
 import { APIService } from "~/client/ctrl/api";
