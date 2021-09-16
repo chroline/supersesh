@@ -2,7 +2,7 @@ import React from "react";
 
 import { As, HStack, Icon, Text, useColorMode } from "@chakra-ui/react";
 
-import theme from "~/client/core/util/theme";
+import theme from "~/client/core/styles/theme";
 
 export const SidebarButton: React.FC<{ icon: As<any>; color?: string; onClick?: () => void }> = ({
   icon,

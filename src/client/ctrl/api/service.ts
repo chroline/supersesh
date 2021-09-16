@@ -9,17 +9,30 @@ import SocketIOAcknowledgementFn from "~/shared/types/SocketIOAcknowledgementFn"
 
 const BASE_URL = process.env.NODE_ENV === "production" ? "https://supersesh.herokuapp.com" : "http://localhost:3000";
 
+/**
+ * Service for making requests (mutations & queries) to API.
+ *
+ * Mutation requests are made thru the socket.io channel; query requests are made thru HTTP GET requests.
+ */
 export namespace APIService {
   let _socket: Socket;
 
   let _serverEventListeners: ((event: ServerEvents, data: any) => void) | undefined;
 
+  /**
+   * Initialize socket.io connection.
+   */
   export function initConnection() {
     _socket = io();
 
     _socket.onAny((event: ServerEvents, data: any) => _serverEventListeners?.(event, data));
   }
 
+  /**
+   * Assign a listener function that listens to server events.
+   *
+   * @param fn - server event listener function
+   */
   export function setServerEventListener(fn?: (event: ServerEvents, data: any) => void) {
     _serverEventListeners = fn;
   }

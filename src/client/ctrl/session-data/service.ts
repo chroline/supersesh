@@ -6,27 +6,55 @@ import Chat from "~/shared/types/Chat";
 import ServerEvents from "~/shared/types/ServerEvents";
 import Session from "~/shared/types/Session";
 
+/**
+ * Service for managing session data.
+ */
 export namespace SessionDataService {
   let _sessionData: Session | undefined;
   let _sessionDataSetter: (session: Session) => void;
 
+  /**
+   * Assign getter and setter for managing session data state.
+   *
+   * @param state
+   * @param fn
+   */
   export function setSessionDataState([state, fn]: [Session | undefined, (session: Session) => void]) {
     _sessionData = state;
     _sessionDataSetter = fn;
   }
 
+  /**
+   * Retrieve session data.
+   */
   export function getSessionData() {
     return _sessionData;
   }
 
+  /**
+   * Call session data setter.
+   *
+   * @param session
+   */
   export function setSessionData(session: Session) {
     _sessionDataSetter(session);
   }
 
+  /**
+   * Add chat (send from current user) to session data.
+   *
+   * @param chat
+   */
   export function addChat(chat: Chat) {
     setSessionData({ ..._sessionData!, chats: [..._sessionData!.chats, chat] });
   }
 
+  /**
+   * Create a new server event listener function for use in {@link APIService.setServerEventListener}.
+   *
+   * @param toast
+   * @param router
+   */
   export const serverEventListener =
     (toast: ReturnType<typeof useToast>, router: ReturnType<typeof useRouter>) => (event: ServerEvents, data: any) => {
       switch (event) {

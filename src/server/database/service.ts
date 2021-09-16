@@ -5,6 +5,9 @@ import APIErrors from "~/shared/types/APIErrors";
 import Chat from "~/shared/types/Chat";
 import Session from "~/shared/types/Session";
 
+/**
+ * Service for interacting with database ({@link DatabaseStore})
+ */
 namespace DatabaseService {
   let _databaseStore: DatabaseStore;
 
@@ -26,10 +29,6 @@ namespace DatabaseService {
 
   export async function getSession(sessionID: string): Promise<Session | undefined> {
     return await _databaseStore.getSession(sessionID);
-  }
-
-  export async function getSessions() {
-    return await _databaseStore.getActiveSessions();
   }
 
   export async function addUserToSession(sessionID: string, userID: string): Promise<void> {

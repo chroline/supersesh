@@ -8,7 +8,7 @@ import NProgress from "nprogress";
 
 import "~/client/core/assets/fonts/Calibre/stylesheet.scss";
 import "~/client/core/styles/nprogress.scss";
-import theme from "~/client/core/util/theme";
+import theme from "~/client/core/styles/theme";
 import { APIService } from "~/client/ctrl/api";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
@@ -16,7 +16,7 @@ Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
 function MyApp({ Component, pageProps, router }: AppProps) {
-  // initialize API socket.io connection
+  // initialize socket.io API connection
   useEffect(() => {
     APIService.initConnection();
   }, []);

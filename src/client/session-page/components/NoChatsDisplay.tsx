@@ -3,7 +3,7 @@ import React from "react";
 import { Icon, Text, VStack } from "@chakra-ui/react";
 import { QuestionAnswerRounded } from "@material-ui/icons";
 
-import theme from "~/client/core/util/theme";
+import theme from "~/client/core/styles/theme";
 
 export const NoChatsDisplay = () => (
   <VStack maxW={"md"} w={"full"} textAlign={"center"} opacity={0.8}>

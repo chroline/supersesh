@@ -48,10 +48,13 @@ export const Sidebar: React.FC = () => {
 
   const { colorMode } = useColorMode();
 
-  const centerModal = useBreakpointValue({ base: true, md: false });
-  console.log(centerModal);
+  const isModalCentered = useBreakpointValue({ base: true, md: false });
+  const isAdmin = localStorage.getItem("name") === SessionDataService.getSessionData()?.adminID;
 
+  // invite some friends
   const { isOpen: isInviteModalOpen, onOpen: openInviteModal, onClose: closeInviteModal } = useDisclosure();
+
+  // listen to lofi beats
   function listenToLofiBeats() {
     window.open(
       "https://open.spotify.com/embed/playlist/7it4DybEQp3XHpmwXgMgz0?theme=0",
@@ -60,6 +63,7 @@ export const Sidebar: React.FC = () => {
     );
   }
 
+  // end session
   const { isOpen: isEndModalOpen, onOpen: openEndModal, onClose: closeEndModal } = useDisclosure(),
     cancelEndBtnRef = useRef();
   async function endSession() {
@@ -67,8 +71,6 @@ export const Sidebar: React.FC = () => {
     closeEndModal();
     router.push("/");
   }
-
-  const isAdmin = localStorage.getItem("name") === SessionDataService.getSessionData()?.adminID;
 
   return (
     <>
@@ -123,7 +125,7 @@ export const Sidebar: React.FC = () => {
           ))}
         </VStack>
       </VStack>
-      <Modal isOpen={isInviteModalOpen} onClose={closeInviteModal} isCentered={centerModal}>
+      <Modal isOpen={isInviteModalOpen} onClose={closeInviteModal} isCentered={isModalCentered}>
         <ModalOverlay />
         <ModalContent mx={4}>
           <ModalHeader color={{ dark: "lightBlue.300", light: "lightBlue.700" }[colorMode]}>
@@ -155,7 +157,7 @@ export const Sidebar: React.FC = () => {
         isOpen={isEndModalOpen}
         leastDestructiveRef={cancelEndBtnRef as any}
         onClose={closeEndModal}
-        isCentered={centerModal}
+        isCentered={isModalCentered}
       >
         <AlertDialogOverlay />
         <AlertDialogContent mx={4}>

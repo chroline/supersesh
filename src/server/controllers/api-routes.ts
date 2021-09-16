@@ -4,6 +4,11 @@ import getSessionData from "~/server/functions/queries/getSessionData";
 import APIEndpoints from "~/shared/types/APIEndpoints";
 import APIErrors from "~/shared/types/APIErrors";
 
+/**
+ * Handle API "GET" query (read) requests.
+ *
+ * There is currently only one endpoint ({@link APIEndpoints.GET_SESSION_DATA})
+ */
 export default async function apiRoutesHandler(req: Request, res: Response) {
   try {
     const endpoint = req.path.split("/api/")[1] as APIEndpoints;

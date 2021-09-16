@@ -1,5 +1,9 @@
 import { createBreakpoints, mode } from "@chakra-ui/theme-tools";
 
+/**
+ * Theme based off of https://gist.github.com/chroline/6256f6ca9db5d147683445d65c00d7e8
+ */
+
 const fonts = {
   body: `'Calibre','Inter', sans-serif`,
   heading: `'Calibre','Inter', sans-serif`,
