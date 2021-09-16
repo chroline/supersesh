@@ -22,6 +22,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useBreakpointValue,
   useColorMode,
   useDisclosure,
   VStack,
@@ -46,6 +47,9 @@ export const Sidebar: React.FC = () => {
   const session = SessionDataService.getSessionData();
 
   const { colorMode } = useColorMode();
+
+  const centerModal = useBreakpointValue({ base: true, md: false });
+  console.log(centerModal);
 
   const { isOpen: isInviteModalOpen, onOpen: openInviteModal, onClose: closeInviteModal } = useDisclosure();
   function listenToLofiBeats() {
@@ -72,7 +76,7 @@ export const Sidebar: React.FC = () => {
         overflowY={"scroll"}
         align={"center"}
         h={"full"}
-        w={"72"}
+        w={"full"}
         flexShrink={0}
         bg={{ dark: "warmGray.900", light: "warmGray.50" }[colorMode]}
         p={6}
@@ -119,9 +123,9 @@ export const Sidebar: React.FC = () => {
           ))}
         </VStack>
       </VStack>
-      <Modal isOpen={isInviteModalOpen} onClose={closeInviteModal}>
+      <Modal isOpen={isInviteModalOpen} onClose={closeInviteModal} isCentered={centerModal}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent mx={4}>
           <ModalHeader color={{ dark: "lightBlue.300", light: "lightBlue.700" }[colorMode]}>
             invite some friends
           </ModalHeader>
@@ -147,21 +151,25 @@ export const Sidebar: React.FC = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <AlertDialog isOpen={isEndModalOpen} leastDestructiveRef={cancelEndBtnRef as any} onClose={closeEndModal}>
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader color={{ dark: "red.300", light: "red.700" }[colorMode]}>end sesh</AlertDialogHeader>
-            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
-            <AlertDialogFooter>
-              <Button ref={cancelEndBtnRef as any} onClick={closeEndModal}>
-                Cancel
-              </Button>
-              <Button colorScheme="red" onClick={endSession} ml={3}>
-                End sesh
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
+      <AlertDialog
+        isOpen={isEndModalOpen}
+        leastDestructiveRef={cancelEndBtnRef as any}
+        onClose={closeEndModal}
+        isCentered={centerModal}
+      >
+        <AlertDialogOverlay />
+        <AlertDialogContent mx={4}>
+          <AlertDialogHeader color={{ dark: "red.300", light: "red.700" }[colorMode]}>end sesh</AlertDialogHeader>
+          <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+          <AlertDialogFooter>
+            <Button ref={cancelEndBtnRef as any} onClick={closeEndModal}>
+              Cancel
+            </Button>
+            <Button colorScheme="red" onClick={endSession} ml={3}>
+              End sesh
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
       </AlertDialog>
     </>
   );

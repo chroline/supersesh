@@ -1,6 +1,24 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
-import { Box, Divider, HStack, useBreakpointValue, useColorMode, useToast, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  Drawer,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
+  HStack,
+  Icon,
+  IconButton,
+  Stack,
+  Text,
+  useBreakpointValue,
+  useColorMode,
+  useDisclosure,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
+import { MenuRounded } from "@material-ui/icons";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -57,6 +75,9 @@ export default function SessionPage(props: SessionPageProps) {
   const { colorMode } = useColorMode();
   const showSidebar = useBreakpointValue({ base: false, md: true });
 
+  const { isOpen: isDrawerOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure(),
+    menuBtnRef = useRef();
+
   return (
     !props.error &&
     isJoined && (
@@ -64,22 +85,42 @@ export default function SessionPage(props: SessionPageProps) {
         <Head>
           <title>{sessionData ? `“${sessionData.name}” on` : "Loading... |"} SuperSesh!</title>
         </Head>
-        <HStack h={"full"} spacing={0}>
+        <Stack direction={showSidebar ? "row" : "column"} h={"full"} spacing={0}>
           {showSidebar && (
-            <Box h={"full"} position={"relative"} zIndex={2} shadow={"lg"}>
+            <Box h={"full"} w={72} position={"relative"} zIndex={2} shadow={"lg"}>
               <Sidebar />
             </Box>
           )}
+          {!showSidebar && (
+            <HStack p={3} spacing={3} w={"full"} position={"relative"} zIndex={2} shadow={"lg"} bg={"white"}>
+              <IconButton aria-label={"menu"} icon={<Icon as={MenuRounded} />} onClick={openDrawer} />
+              <Text isTruncated fontWeight={"semibold"}>
+                {sessionData ? `“${sessionData.name}”` : "Loading.."}
+              </Text>
+            </HStack>
+          )}
           <VStack
-            w={"full"}
-            h={"full"}
+            flex={1}
             spacing={0}
             divider={<Divider borderColor={{ dark: "warmGray.700", light: "warmGray.200" }[colorMode]} />}
           >
             <ChatDisplay />
             <ChatForm />
           </VStack>
-        </HStack>
+        </Stack>
+        <Drawer
+          placement={"left"}
+          size={"xs"}
+          isOpen={isDrawerOpen}
+          onClose={closeDrawer}
+          finalFocusRef={menuBtnRef as any}
+        >
+          <DrawerOverlay />
+          <DrawerContent maxW={72}>
+            <DrawerCloseButton />
+            <Sidebar />
+          </DrawerContent>
+        </Drawer>
       </PageTransition>
     )
   );
