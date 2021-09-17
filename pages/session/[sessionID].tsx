@@ -42,6 +42,7 @@ export const getServerSideProps: GetServerSideProps<SessionPageProps> = async co
   try {
     sessionData = await APIService.I.getSessionData(sessionID);
   } catch (e) {
+    console.error(e);
     return { props: { value: null, error: (e as Error).message } };
   }
 
@@ -115,10 +116,11 @@ export default function SessionPage(props: SessionPageProps) {
           )}
           {!showSidebar && (
             <HStack
-              p={3}
+              px={3}
               spacing={3}
               w={"full"}
-              position={"relative"}
+              h={16}
+              position={"fixed"}
               zIndex={2}
               shadow={"lg"}
               bg={{ dark: "warmGray.900", light: "warmGray.100" }[colorMode]}
@@ -134,6 +136,7 @@ export default function SessionPage(props: SessionPageProps) {
             overflow={"hidden"}
             spacing={0}
             divider={<Divider borderColor={{ dark: "warmGray.700", light: "warmGray.200" }[colorMode]} />}
+            pt={!showSidebar ? 16 : 0}
           >
             <ChatDisplay />
             <ChatForm />
