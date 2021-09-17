@@ -8,7 +8,7 @@
 
 <a href='https://supersesh.herokuapp.com'>
 
-<img src='https://img.shields.io/badge/VISIT PROJECT-blue?style=for-the-badge'>
+<img src='https://img.shields.io/badge/VISIT%20PROJECT-blue?style=for-the-badge'>
 
 </a>
 
