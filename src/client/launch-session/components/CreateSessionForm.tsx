@@ -83,7 +83,7 @@ export const CreateSessionForm: React.FC = () => {
     formMethods.setSessionNameError(sessionNameValidation.error);
     if (sessionNameValidation.error) {
       toast({
-        title: "Session Name is invalid",
+        title: "Sesh Name is invalid",
         status: "error",
         duration: 9000,
         isClosable: true,
