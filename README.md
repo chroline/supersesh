@@ -40,8 +40,9 @@ on that in a bit). Here is a brief overview on the specifics of the implementati
   database.
   - For the scope of this project, I was focused on getting a working MVP that can be deployed publicly. I therefore 
     chose not to use an actual MongoDB database, and instead implemented the mock database previously described. 
-    However, this mock database is abstracted such that MongoDB can eventually be implemented without having to re-
-    implement the rest of the features in the project.
+    However, [this mock database is abstracted](https://github.com/chroline/supersesh/blob/main/src/server/database/store.ts) 
+    such that MongoDB can eventually be   implemented without having to re-implement the rest of the features in the 
+    project.
 - **ExpressJS** is a backend web application framework for Node.js that handles HTTP requests to the web application. 
   In conjunction with [Socket.IO](https://socket.io), the backend application powering SuperSesh handles both one-way 
   (HTTP GET) requests and two-way (Socket.IO channels) connections.
@@ -67,3 +68,5 @@ project some extra flare.
 
 - The font used in this project is [Calibre by Klim Type Foundry](https://klim.co.nz/retail-fonts/calibre/).
 - The theme used in this project is based off [this base theme](https://gist.github.com/chroline/6256f6ca9db5d147683445d65c00d7e8).
+
+Additionally, this project uses [NProgress](https://github.com/rstacruz/nprogress) to display page loading progress to the user. SCSS is used to provide custom styling to the NProgress loading indicator that matches the brand of SuperSesh.
