@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { AnimatePresence } from "framer-motion";
 import { AppProps } from "next/app";
 import Router from "next/router";
 import NProgress from "nprogress";
+import { useAsync } from "react-use";
 
 import "~/client/core/assets/fonts/Calibre/stylesheet.scss";
 import "~/client/core/styles/nprogress.scss";
@@ -17,14 +18,14 @@ Router.events.on("routeChangeError", () => NProgress.done());
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   // initialize socket.io API connection
-  useEffect(() => {
+  const { loading } = useAsync(async () => {
     APIService.initConnection();
   }, []);
 
   return (
     <ChakraProvider resetCSS theme={extendTheme(theme)}>
       <AnimatePresence exitBeforeEnter initial={false} onExitComplete={() => window.scrollTo(0, 0)}>
-        <Component {...pageProps} key={router.route || "/"} />
+        {!loading && <Component {...pageProps} key={router.route || "/"} />}
       </AnimatePresence>
     </ChakraProvider>
   );
