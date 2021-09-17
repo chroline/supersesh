@@ -22,7 +22,6 @@ import { MenuRounded } from "@material-ui/icons";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useAsync } from "react-use";
 
 import { PageTransition } from "~/client/core/components/PageTransition";
 import APIService from "~/client/core/services/api";
