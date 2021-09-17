@@ -22,6 +22,7 @@ import { MenuRounded } from "@material-ui/icons";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useAsync } from "react-use";
 
 import { PageTransition } from "~/client/core/components/PageTransition";
 import { APIService } from "~/client/ctrl/api";
@@ -29,7 +30,7 @@ import { SessionDataService } from "~/client/ctrl/session-data";
 import { ChatDisplay } from "~/client/session-page/components/ChatDisplay";
 import { ChatForm } from "~/client/session-page/components/ChatForm";
 import { Sidebar } from "~/client/session-page/components/Sidebar";
-import { useHandleSessionPageRedirects } from "~/client/session-page/hooks/useHandleSessionPageRedirects";
+import { handleSessionPageRedirects } from "~/client/session-page/hooks/handleSessionPageRedirects";
 import SessionPageProps from "~/client/session-page/util/SessionPageProps";
 import Session from "~/shared/types/Session";
 
@@ -53,6 +54,8 @@ export default function SessionPage(props: SessionPageProps) {
   const router = useRouter(),
     sessionID = router.query.sessionID as string;
 
+  const toast = useToast({ position: "bottom-right" });
+
   const [sessionData, setSessionData] = useState<Session | undefined>(
     SessionDataService.getSessionData() || {
       adminID: props.value?.session.adminID || "",
@@ -64,12 +67,30 @@ export default function SessionPage(props: SessionPageProps) {
   SessionDataService.setSessionDataState([sessionData, setSessionData]);
 
   const userID = process.browser ? localStorage.getItem("name") || "" : "",
-    isJoined = props.value?.session.userIDs.includes(userID) || props.value?.session.adminID === userID;
+    isAdmin = props.value?.session.adminID === userID,
+    isJoined = props.value?.session.userIDs.includes(userID) || isAdmin;
+
+  useAsync(async () => {
+    if (isAdmin) {
+      try {
+        await APIService.rejoinSession(sessionID, userID);
+      } catch (e) {
+        toast({
+          title: "An error occurred",
+          description: (e as Error).message,
+          status: "error",
+          variant: "solid",
+          duration: 9000,
+          isClosable: true,
+        });
+        APIService.endSession(sessionID);
+        router.push("/");
+      }
+    }
+  }, [isAdmin]);
 
   // handle potential errors that result in redirects
-  useHandleSessionPageRedirects(props, isJoined, sessionID);
-
-  const toast = useToast({ position: "bottom-right" });
+  handleSessionPageRedirects(props, isJoined, sessionID);
   APIService.setServerEventListener(SessionDataService.serverEventListener(toast, router));
 
   const { colorMode } = useColorMode();

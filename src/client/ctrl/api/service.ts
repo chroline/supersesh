@@ -55,6 +55,15 @@ export namespace APIService {
     );
   }
 
+  export function rejoinSession(sessionID: string, userID: string): Promise<void> {
+    return new Promise((resolve, reject) =>
+      _socket.emit(ClientEvents.ADMIN_REJOIN_SESSION, { sessionID, userID }, ((_, error) => {
+        if (!error) resolve();
+        else reject(new Error(error));
+      }) as SocketIOAcknowledgementFn)
+    );
+  }
+
   export async function getSessionData(sessionID: string): Promise<Session> {
     const res = await fetch(`${BASE_URL}/api/${APIEndpoints.GET_SESSION_DATA}?sessionID=${sessionID}`).then(
       async res => {

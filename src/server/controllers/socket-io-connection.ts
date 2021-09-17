@@ -5,6 +5,7 @@ import DatabaseService from "~/server/database/service";
 import createSession from "~/server/functions/mutations/createSession";
 import endSession from "~/server/functions/mutations/endSession";
 import joinSession from "~/server/functions/mutations/joinSession";
+import rejoinSession from "~/server/functions/mutations/rejoinSession";
 import sendChat from "~/server/functions/mutations/sendChat";
 import ClientEvents from "~/shared/types/ClientEvents";
 import ServerEvents from "~/shared/types/ServerEvents";
@@ -17,6 +18,7 @@ import ServerEvents from "~/shared/types/ServerEvents";
  * There are 3 current available operations:
  * 1. {@link ClientEvents.CREATE_SESSION}: add provided session data to database
  * 2. {@link ClientEvents.JOIN_SESSION}: notify database of a user being added to session
+ * 2. {@link ClientEvents.ADMIN_REJOIN_SESSION}: re-add admin into socket.io room
  * 3. {@link ClientEvents.CHAT}: add chat to session
  * 4. {@link ClientEvents.END}: delete session from database and notify users
  */
@@ -31,14 +33,16 @@ const socketIOConnection = (io: Server) => (socket: socketio.Socket) => {
     ClientEvents.JOIN_SESSION,
     joinSession(socket, sessionInfo => (_sessionInfo = sessionInfo))
   );
+  socket.on(
+    ClientEvents.ADMIN_REJOIN_SESSION,
+    rejoinSession(socket, sessionInfo => (_sessionInfo = sessionInfo))
+  );
   socket.on(ClientEvents.CHAT, sendChat(socket));
   socket.on(ClientEvents.END, endSession(socket));
 
   socket.on("disconnect", async () => {
     if (_sessionInfo) {
-      if (_sessionInfo.userID === (await DatabaseService.getSession(_sessionInfo.sessionID))?.adminID) {
-        io.to(_sessionInfo.sessionID).emit(ServerEvents.END);
-      } else {
+      if (_sessionInfo.userID !== (await DatabaseService.getSession(_sessionInfo.sessionID))?.adminID) {
         io.to(_sessionInfo.sessionID).emit(ServerEvents.USER_LEAVE, _sessionInfo.userID);
         await DatabaseService.removeUserFromSession(_sessionInfo.sessionID, _sessionInfo.userID);
       }
