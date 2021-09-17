@@ -31,8 +31,8 @@ export const ChatDisplay: React.FC<{}> = () => {
       <VStack ref={chatListRef as any} w={"full"} minH={"full"} p={6} spacing={4}>
         <Box flex={1} />
         {sessionData.chats.map((chat, i) => (
-          <Box ref={i === sessionData.chats.length - 1 ? (bottomChatRef as any) : undefined} w={"full"}>
-            <ChatMessage key={i} chat={chat} />
+          <Box key={i} ref={i === sessionData.chats.length - 1 ? (bottomChatRef as any) : undefined} w={"full"}>
+            <ChatMessage chat={chat} />
           </Box>
         ))}
         {sessionData.chats.length === 0 && <NoChatsDisplay />}
