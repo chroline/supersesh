@@ -9,7 +9,12 @@ import SessionDataService from "~/client/core/services/session-data";
 import SessionPageProps from "~/client/session-page/util/SessionPageProps";
 import APIErrors from "~/shared/types/APIErrors";
 
-export const handleSessionPageRedirects = (props: SessionPageProps, isJoined: boolean, sessionID: string) => {
+export const handleSessionPageRedirects = (
+  props: SessionPageProps,
+  isJoined: boolean,
+  isAdmin: boolean,
+  sessionID: string
+) => {
   const router = useRouter(),
     toast = useToast({ position: "bottom-right" });
 
@@ -27,6 +32,27 @@ export const handleSessionPageRedirects = (props: SessionPageProps, isJoined: bo
       router.push("/join/" + sessionID);
     }
   }, [isJoined]);
+
+  // ensure that the admin is joined in socket.io room
+  // if an error occurs, end session and redirect to homepage
+  useAsync(async () => {
+    if (isAdmin) {
+      try {
+        await APIService.I.rejoinSession(sessionID, localStorage.getItem("name") || "");
+      } catch (e) {
+        toast({
+          title: "An error occurred",
+          description: (e as Error).message,
+          status: "error",
+          variant: "solid",
+          duration: 9000,
+          isClosable: true,
+        });
+        APIService.I.endSession(sessionID);
+        router.push("/");
+      }
+    }
+  }, [isAdmin]);
 
   // verify no users in server-side props generation
   // otherwise redirect to homepage

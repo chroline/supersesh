@@ -66,34 +66,18 @@ export default function SessionPage(props: SessionPageProps) {
     }
   );
 
+  // assign session data getter and setter
   SessionDataService.I.sessionDataState = [sessionData, setSessionData];
+
+  // assign server event listener function
+  APIService.I.serverEventListener = SessionDataService.I.serverEventListener(toast, router);
 
   const userID = process.browser ? localStorage.getItem("name") || "" : "",
     isAdmin = props.value?.session.adminID === userID,
     isJoined = props.value?.session.userIDs.includes(userID) || isAdmin;
 
-  useAsync(async () => {
-    if (isAdmin) {
-      try {
-        await APIService.I.rejoinSession(sessionID, userID);
-      } catch (e) {
-        toast({
-          title: "An error occurred",
-          description: (e as Error).message,
-          status: "error",
-          variant: "solid",
-          duration: 9000,
-          isClosable: true,
-        });
-        APIService.I.endSession(sessionID);
-        router.push("/");
-      }
-    }
-  }, [isAdmin]);
-
   // handle potential errors that result in redirects
-  handleSessionPageRedirects(props, isJoined, sessionID);
-  APIService.I.serverEventListener = SessionDataService.I.serverEventListener(toast, router);
+  handleSessionPageRedirects(props, isJoined, isAdmin, sessionID);
 
   const { colorMode } = useColorMode();
   const showSidebar = useBreakpointValue({ base: false, md: true });
