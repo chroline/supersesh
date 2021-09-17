@@ -22,6 +22,14 @@ nextApp.prepare().then(async () => {
   const io: socketio.Server = new socketio.Server();
   io.attach(server);
 
+  // redirect http to https
+  app.use((req, res, next) => {
+    if (process.env.NODE_ENV === "production") {
+      if (req.headers["x-forwarded-proto"] !== "https") return res.redirect("https://" + req.headers.host + req.url);
+      else return next();
+    } else return next();
+  });
+
   app.get("/api/*", apiRoutesHandler);
 
   io.on("connection", socketIOConnection(io));
