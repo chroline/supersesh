@@ -80,6 +80,11 @@ export const JoinSessionForm = () => {
     router.query.sessionID && formMethods.setSessionID(router.query.sessionID);
   }, [router.query.sessionID]);
 
+  // set userID value to "name" item in localStorage if it is present
+  useEffect(() => {
+    localStorage.getItem("name") && formMethods.setUserID(localStorage.getItem("name"));
+  }, []);
+
   function _validateInputs() {
     const sessionIDValidation = validateFieldValue(formState.sessionID.value);
     formMethods.setSessionIDError(sessionIDValidation.error);

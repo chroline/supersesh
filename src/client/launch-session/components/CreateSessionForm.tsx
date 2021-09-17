@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Box,
@@ -72,6 +72,11 @@ export const CreateSessionForm: React.FC = () => {
   const toast = useToast({ position: "bottom-right" });
 
   const [formState, formMethods] = useMethods(_createFormStateMethods, initialFormState);
+
+  // set userID value to "name" item in localStorage if it is present
+  useEffect(() => {
+    localStorage.getItem("name") && formMethods.setUserID(localStorage.getItem("name"));
+  }, []);
 
   function _validateInputs() {
     const sessionNameValidation = validateFieldValue(formState.sessionName.value);
