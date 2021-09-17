@@ -26,7 +26,7 @@
    2. The frontend application is managed by Next.js which handles SSR and other high-level features.
 2. This project is structured as a monorepo codebase that contains code used in both the client- and server-side.
 3. [Chakra UI](https://chakra-ui.com) is used as a base component library for stylistic purposes. 
-   1. A custom theme was created that has a custom font and colors.
+   1. A custom theme was created with a custom font choices and colors.
    2. SCSS was used to style the nprogress loading indicator.
 
 ## MERN Stack
