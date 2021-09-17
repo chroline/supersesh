@@ -18,9 +18,6 @@ Router.events.on("routeChangeError", () => NProgress.done());
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const { loading } = useAsync(async () => {
-    // assign APIService singleton instance
-    APIService.I = new APIService();
-
     // initialize socket.io API connection
     APIService.I.initConnection();
   }, []);

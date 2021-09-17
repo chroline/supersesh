@@ -7,7 +7,8 @@ import ServerEvents from "~/shared/types/ServerEvents";
 import Session from "~/shared/types/Session";
 import SocketIOAcknowledgementFn from "~/shared/types/SocketIOAcknowledgementFn";
 
-const BASE_URL = process.env.NODE_ENV === "production" ? "https://supersesh.herokuapp.com" : "http://localhost:3000";
+const BASE_URL =
+  process.env.NODE_ENV === "production" ? "https://supersesh.herokuapp.com" : "http://192.168.86.99:3000";
 
 /**
  * Service for making requests (mutations & queries) to API.
@@ -15,7 +16,7 @@ const BASE_URL = process.env.NODE_ENV === "production" ? "https://supersesh.hero
  * Mutation requests are made thru the socket.io channel; query requests are made thru HTTP GET requests.
  */
 export default class APIService {
-  public static I: APIService;
+  public static I: APIService = new APIService();
 
   private _socket!: Socket;
   private _serverEventListeners: ((event: ServerEvents, data: any) => void) | undefined;

@@ -10,7 +10,7 @@ import Session from "~/shared/types/Session";
  * Service for managing session data.
  */
 export default class SessionDataService {
-  public static I: SessionDataService;
+  public static I: SessionDataService = new SessionDataService();
 
   private _sessionDataSetter!: (session: Session) => void;
   private _sessionData?: Session;
