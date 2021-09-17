@@ -113,7 +113,15 @@ export default function SessionPage(props: SessionPageProps) {
             </Box>
           )}
           {!showSidebar && (
-            <HStack p={3} spacing={3} w={"full"} position={"relative"} zIndex={2} shadow={"lg"} bg={"white"}>
+            <HStack
+              p={3}
+              spacing={3}
+              w={"full"}
+              position={"relative"}
+              zIndex={2}
+              shadow={"lg"}
+              bg={{ dark: "warmGray.900", light: "warmGray.100" }[colorMode]}
+            >
               <IconButton aria-label={"menu"} icon={<Icon as={MenuRounded} />} onClick={openDrawer} />
               <Text isTruncated fontWeight={"semibold"}>
                 {sessionData ? `“${sessionData.name}”` : "Loading.."}
