@@ -1,7 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import { APIService } from "~/client/ctrl/api";
+import APIService from "~/client/core/services/api";
 import Chat from "~/shared/types/Chat";
 import ServerEvents from "~/shared/types/ServerEvents";
 import Session from "~/shared/types/Session";
@@ -9,26 +9,17 @@ import Session from "~/shared/types/Session";
 /**
  * Service for managing session data.
  */
-export namespace SessionDataService {
-  let _sessionData: Session | undefined;
-  let _sessionDataSetter: (session: Session) => void;
+export default class SessionDataService {
+  public static I: SessionDataService;
 
-  /**
-   * Assign getter and setter for managing session data state.
-   *
-   * @param state
-   * @param fn
-   */
-  export function setSessionDataState([state, fn]: [Session | undefined, (session: Session) => void]) {
-    _sessionData = state;
-    _sessionDataSetter = fn;
-  }
+  private _sessionDataSetter!: (session: Session) => void;
+  private _sessionData?: Session;
 
   /**
    * Retrieve session data.
    */
-  export function getSessionData() {
-    return _sessionData;
+  get sessionData() {
+    return this._sessionData!;
   }
 
   /**
@@ -36,8 +27,18 @@ export namespace SessionDataService {
    *
    * @param session
    */
-  export function setSessionData(session: Session) {
-    _sessionDataSetter(session);
+  set sessionData(session: Session) {
+    this._sessionDataSetter(session);
+  }
+
+  /**
+   * Assign getter and setter for managing session data state.
+   *
+   * @param state
+   */
+  set sessionDataState(state: [Session | undefined, (session: Session) => void]) {
+    this._sessionData = state[0];
+    this._sessionDataSetter = state[1];
   }
 
   /**
@@ -45,8 +46,8 @@ export namespace SessionDataService {
    *
    * @param chat
    */
-  export function addChat(chat: Chat) {
-    setSessionData({ ..._sessionData!, chats: [..._sessionData!.chats, chat] });
+  addChat(chat: Chat) {
+    this.sessionData = { ...this._sessionData!, chats: [...this._sessionData!.chats, chat] };
   }
 
   /**
@@ -55,11 +56,11 @@ export namespace SessionDataService {
    * @param toast
    * @param router
    */
-  export const serverEventListener =
+  serverEventListener =
     (toast: ReturnType<typeof useToast>, router: ReturnType<typeof useRouter>) => (event: ServerEvents, data: any) => {
       switch (event) {
         case ServerEvents.USER_JOIN:
-          setSessionData({ ..._sessionData!, userIDs: [..._sessionData!.userIDs, data] });
+          this.sessionData = { ...this._sessionData!, userIDs: [...this._sessionData!.userIDs, data] };
 
           toast({
             title: data + " joined!",
@@ -71,9 +72,9 @@ export namespace SessionDataService {
           new Audio("/sfx/user_join.m4a").play();
           return;
         case ServerEvents.USER_LEAVE:
-          const userIDs = new Set(_sessionData!.userIDs);
+          const userIDs = new Set(this._sessionData!.userIDs);
           userIDs.delete(data);
-          setSessionData({ ..._sessionData!, userIDs: Array.from(userIDs) });
+          this.sessionData = { ...this._sessionData!, userIDs: Array.from(userIDs) };
 
           toast({
             title: data + " left.",
@@ -85,12 +86,12 @@ export namespace SessionDataService {
           new Audio("/sfx/user_leave.m4a").play();
           return;
         case ServerEvents.CHAT:
-          setSessionData({ ..._sessionData!, chats: [..._sessionData!.chats, data] });
+          this.sessionData = { ...this._sessionData!, chats: [...this._sessionData!.chats, data] };
 
           new Audio("/sfx/chat_receive.m4a").play();
           return;
         case ServerEvents.END:
-          APIService.setServerEventListener(undefined);
+          APIService.I.serverEventListener = undefined;
           router.push("/");
 
           toast({

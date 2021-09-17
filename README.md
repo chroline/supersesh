@@ -19,7 +19,7 @@
 # Technical Overview
 
 **SuperSesh** is built using the MERN (**M**ongoDB, **E**xpressJS, **R**eact, **N**ode.js) stack *sans* MongoDB (more on 
-that in a bit). Here is a brief overview of the specifics of the implementation of the stack for SuperSesh:
+that in a bit). Here is a brief overview on the specifics of the implementation of the stack for this project:
 
 - **MongoDB** is a NoSQL document-oriented database and is one of the defining features of the MERN stack. To replicate the 
 nature of a MongoDB database, I opted to have a single native Javascript object act as the "database storage" for the 

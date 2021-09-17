@@ -3,12 +3,12 @@ import React, { useEffect, useRef } from "react";
 import { Box, VStack } from "@chakra-ui/react";
 import { useScroll } from "react-use";
 
-import { SessionDataService } from "~/client/ctrl/session-data";
+import SessionDataService from "~/client/core/services/session-data";
 import { ChatMessage } from "~/client/session-page/components/ChatMessage";
 import { NoChatsDisplay } from "~/client/session-page/components/NoChatsDisplay";
 
-export const ChatDisplay: React.FC<{}> = () => {
-  const sessionData = SessionDataService.getSessionData()!;
+export const ChatDisplay: React.FC = () => {
+  const sessionData = SessionDataService.I.sessionData!;
 
   const chatListRef = useRef<HTMLDivElement>(),
     chatBoxRef = useRef<HTMLDivElement>(),

@@ -8,18 +8,21 @@ import NProgress from "nprogress";
 import { useAsync } from "react-use";
 
 import "~/client/core/assets/fonts/Calibre/stylesheet.scss";
+import APIService from "~/client/core/services/api";
 import "~/client/core/styles/nprogress.scss";
 import theme from "~/client/core/styles/theme";
-import { APIService } from "~/client/ctrl/api";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
 function MyApp({ Component, pageProps, router }: AppProps) {
-  // initialize socket.io API connection
   const { loading } = useAsync(async () => {
-    APIService.initConnection();
+    // assign APIService singleton instance
+    APIService.I = new APIService();
+
+    // initialize socket.io API connection
+    APIService.I.initConnection();
   }, []);
 
   return (

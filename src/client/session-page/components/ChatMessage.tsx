@@ -5,8 +5,8 @@ import { PersonRounded, VerifiedUserRounded } from "@material-ui/icons";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
+import SessionDataService from "~/client/core/services/session-data";
 import theme from "~/client/core/styles/theme";
-import { SessionDataService } from "~/client/ctrl/session-data";
 import Chat from "~/shared/types/Chat";
 
 dayjs.extend(relativeTime);
@@ -17,13 +17,13 @@ export const ChatMessage: React.FC<{ chat: Chat }> = ({ chat }) => {
   const isUserColor = { dark: "blue.300", light: "blue.700" }[colorMode];
 
   const textColor =
-    chat.userID === SessionDataService.getSessionData()!.adminID
+    chat.userID === SessionDataService.I.sessionData!.adminID
       ? isAdminColor
       : chat.userID === localStorage.getItem("name")
       ? isUserColor
       : undefined;
 
-  const icon = chat.userID === SessionDataService.getSessionData()!.adminID ? VerifiedUserRounded : PersonRounded;
+  const icon = chat.userID === SessionDataService.I.sessionData!.adminID ? VerifiedUserRounded : PersonRounded;
 
   return (
     <VStack w={"full"} textAlign={"left"} spacing={1}>

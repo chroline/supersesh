@@ -37,19 +37,19 @@ import {
 import { useRouter } from "next/router";
 
 import { Logo } from "~/client/core/components/Logo";
-import { APIService } from "~/client/ctrl/api";
-import { SessionDataService } from "~/client/ctrl/session-data";
+import APIService from "~/client/core/services/api";
+import SessionDataService from "~/client/core/services/session-data";
 import { SidebarButton } from "~/client/session-page/components/SidebarButton";
 
 export const Sidebar: React.FC = () => {
   const router = useRouter(),
     sessionID = router.query.sessionID as string;
-  const session = SessionDataService.getSessionData();
+  const session = SessionDataService.I.sessionData!;
 
   const { colorMode } = useColorMode();
 
   const isModalCentered = useBreakpointValue({ base: true, md: false });
-  const isAdmin = localStorage.getItem("name") === SessionDataService.getSessionData()?.adminID;
+  const isAdmin = localStorage.getItem("name") === session.adminID;
 
   // invite some friends
   const { isOpen: isInviteModalOpen, onOpen: openInviteModal, onClose: closeInviteModal } = useDisclosure();
@@ -67,7 +67,7 @@ export const Sidebar: React.FC = () => {
   const { isOpen: isEndModalOpen, onOpen: openEndModal, onClose: closeEndModal } = useDisclosure(),
     cancelEndBtnRef = useRef();
   async function endSession() {
-    await APIService.endSession(sessionID);
+    await APIService.I.endSession(sessionID);
     closeEndModal();
     router.push("/");
   }

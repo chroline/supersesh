@@ -25,8 +25,8 @@ import { useRouter } from "next/router";
 import { useAsync } from "react-use";
 
 import { PageTransition } from "~/client/core/components/PageTransition";
-import { APIService } from "~/client/ctrl/api";
-import { SessionDataService } from "~/client/ctrl/session-data";
+import APIService from "~/client/core/services/api";
+import SessionDataService from "~/client/core/services/session-data";
 import { ChatDisplay } from "~/client/session-page/components/ChatDisplay";
 import { ChatForm } from "~/client/session-page/components/ChatForm";
 import { Sidebar } from "~/client/session-page/components/Sidebar";
@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps<SessionPageProps> = async co
   let sessionData: Session;
 
   try {
-    sessionData = await APIService.getSessionData(sessionID);
+    sessionData = await APIService.I.getSessionData(sessionID);
   } catch (e) {
     return { props: { value: null, error: (e as Error).message } };
   }
@@ -57,14 +57,15 @@ export default function SessionPage(props: SessionPageProps) {
   const toast = useToast({ position: "bottom-right" });
 
   const [sessionData, setSessionData] = useState<Session | undefined>(
-    SessionDataService.getSessionData() || {
+    SessionDataService.I.sessionData || {
       adminID: props.value?.session.adminID || "",
       chats: [],
       userIDs: [],
       name: props.value?.session.name || "",
     }
   );
-  SessionDataService.setSessionDataState([sessionData, setSessionData]);
+
+  SessionDataService.I.sessionDataState = [sessionData, setSessionData];
 
   const userID = process.browser ? localStorage.getItem("name") || "" : "",
     isAdmin = props.value?.session.adminID === userID,
@@ -73,7 +74,7 @@ export default function SessionPage(props: SessionPageProps) {
   useAsync(async () => {
     if (isAdmin) {
       try {
-        await APIService.rejoinSession(sessionID, userID);
+        await APIService.I.rejoinSession(sessionID, userID);
       } catch (e) {
         toast({
           title: "An error occurred",
@@ -83,7 +84,7 @@ export default function SessionPage(props: SessionPageProps) {
           duration: 9000,
           isClosable: true,
         });
-        APIService.endSession(sessionID);
+        APIService.I.endSession(sessionID);
         router.push("/");
       }
     }
@@ -91,7 +92,7 @@ export default function SessionPage(props: SessionPageProps) {
 
   // handle potential errors that result in redirects
   handleSessionPageRedirects(props, isJoined, sessionID);
-  APIService.setServerEventListener(SessionDataService.serverEventListener(toast, router));
+  APIService.I.serverEventListener = SessionDataService.I.serverEventListener(toast, router);
 
   const { colorMode } = useColorMode();
   const showSidebar = useBreakpointValue({ base: false, md: true });

@@ -15,7 +15,7 @@ import {
 import { useRouter } from "next/router";
 import { useAsyncFn, useMethods } from "react-use";
 
-import { APIService } from "~/client/ctrl/api";
+import APIService from "~/client/core/services/api";
 import APIErrors from "~/shared/types/APIErrors";
 
 const fieldState = {
@@ -116,7 +116,7 @@ export const JoinSessionForm = () => {
     if (_validateInputs()) return;
 
     try {
-      await APIService.joinSession(formState.sessionID.value, formState.userID.value);
+      await APIService.I.joinSession(formState.sessionID.value, formState.userID.value);
       localStorage.setItem("name", formState.userID.value);
       await router.push("/session/" + formState.sessionID.value);
       toast({

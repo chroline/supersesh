@@ -15,7 +15,7 @@ import {
 import { useRouter } from "next/router";
 import { useAsyncFn, useMethods } from "react-use";
 
-import { APIService } from "~/client/ctrl/api";
+import APIService from "~/client/core/services/api";
 
 const fieldState = {
   value: "",
@@ -109,7 +109,7 @@ export const CreateSessionForm: React.FC = () => {
     if (_validateInputs()) return;
 
     try {
-      const sessionID = await APIService.createSession({
+      const sessionID = await APIService.I.createSession({
         name: formState.sessionName.value,
         adminID: formState.userID.value,
         userIDs: [],

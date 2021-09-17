@@ -4,8 +4,8 @@ import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useAsync } from "react-use";
 
-import { APIService } from "~/client/ctrl/api";
-import { SessionDataService } from "~/client/ctrl/session-data";
+import APIService from "~/client/core/services/api";
+import SessionDataService from "~/client/core/services/session-data";
 import SessionPageProps from "~/client/session-page/util/SessionPageProps";
 import APIErrors from "~/shared/types/APIErrors";
 
@@ -62,7 +62,7 @@ export const handleSessionPageRedirects = (props: SessionPageProps, isJoined: bo
   useAsync(async () => {
     if (sessionID && !props.error) {
       try {
-        SessionDataService.setSessionData(await APIService.getSessionData(sessionID));
+        SessionDataService.I.sessionData = await APIService.I.getSessionData(sessionID);
       } catch (e) {
         toast({
           title: "An error occurred",

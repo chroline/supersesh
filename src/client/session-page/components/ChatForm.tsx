@@ -4,10 +4,10 @@ import { Box, Textarea, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import TextareaAutosize from "react-autosize-textarea";
 
-import { APIService } from "~/client/ctrl/api";
-import { SessionDataService } from "~/client/ctrl/session-data";
+import APIService from "~/client/core/services/api";
+import SessionDataService from "~/client/core/services/session-data";
 
-export const ChatForm: React.FC<{}> = () => {
+export const ChatForm: React.FC = () => {
   const sessionID = useRouter().query.sessionID as string;
 
   const [value, setValue] = useState<string>("");
@@ -29,8 +29,8 @@ export const ChatForm: React.FC<{}> = () => {
           userID: localStorage.getItem("name") as string,
           msg: value,
         };
-        await APIService.sendChat(sessionID, chat);
-        SessionDataService.addChat(chat);
+        await APIService.I.sendChat(sessionID, chat);
+        SessionDataService.I.addChat(chat);
       } catch (e) {
         toast({
           title: "An error occurred",
