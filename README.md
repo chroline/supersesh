@@ -4,9 +4,7 @@
 
 **a project created by [Cole Gawin](https://github.com/chroline)**
 
-<img alt="Hosted on Heroku" src='https://img.shields.io/badge/hosted%20on-heroku-purple?logo=heroku&style=for-the-badge'>
-
-<a href='https://supersesh.herokuapp.com'>
+<a href='https://supersesh.up.railway.app'>
 
 <img src='https://img.shields.io/badge/VISIT%20PROJECT-blue?style=for-the-badge'>
 
