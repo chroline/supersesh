@@ -8,7 +8,7 @@ import Session from "~/shared/types/Session";
 import SocketIOAcknowledgementFn from "~/shared/types/SocketIOAcknowledgementFn";
 
 const BASE_URL =
-  process.env.NODE_ENV === "production" ? "https://supersesh.herokuapp.com" : "http://192.168.86.33:3000";
+  process.env.NODE_ENV === "production" ? "https://supersesh.up.railway.app" : "http://192.168.86.33:3000";
 
 /**
  * Service for making requests (mutations & queries) to API.
