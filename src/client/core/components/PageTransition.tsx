@@ -48,7 +48,10 @@ const variants = {
   },
 };
 
-export const PageTransition: React.FC<{ variant: keyof typeof variants }> = ({ variant, children }) => (
+export const PageTransition: React.FC<{ variant: keyof typeof variants; children: React.ReactNode }> = ({
+  variant,
+  children,
+}) => (
   <motion.div
     initial="hidden"
     animate="enter"

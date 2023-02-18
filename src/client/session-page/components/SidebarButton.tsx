@@ -4,12 +4,12 @@ import { As, HStack, Icon, Text, useColorMode } from "@chakra-ui/react";
 
 import theme from "~/client/core/styles/theme";
 
-export const SidebarButton: React.FC<{ icon: As<any>; color?: string; onClick?: () => void }> = ({
-  icon,
-  color = "warmGray",
-  onClick,
-  children,
-}) => {
+export const SidebarButton: React.FC<{
+  icon: As<any>;
+  color?: string;
+  onClick?: () => void;
+  children: React.ReactNode;
+}> = ({ icon, color = "warmGray", onClick, children }) => {
   const { colorMode } = useColorMode();
 
   return (
