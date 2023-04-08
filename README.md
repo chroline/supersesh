@@ -1,18 +1,25 @@
 <div align='center'>
 
-# Super[Sesh!](https://en.wiktionary.org/wiki/sesh#:~:text=A%20session)
+# 👨‍🎤 *Super[Sesh!](https://en.wiktionary.org/wiki/sesh#:~:text=A%20session)*
 
 **a project created by [Cole Gawin](https://github.com/chroline)**
 
-<a href='https://supersesh.up.railway.app'>
-
-<img src='https://img.shields.io/badge/VISIT%20PROJECT-blue?style=for-the-badge'>
-
-</a>
-
 </div>
 
----
+# Getting Started
+
+To run _**SuperSesh**_ on your local machine:
+
+1. Install repositories with `yarn install`
+2. Start the dev server with `yarn dev`
+3. Visit `http://localhost:3000`
+
+To run the production server:
+
+1. Install repositories with `yarn install`
+2. Build the repo with `yarn build`
+3. Run the prod server with `yarn start`
+4. Visit `http://localhost:3000`
 
 # Technical Overview
 
